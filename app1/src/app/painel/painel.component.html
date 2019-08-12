@@ -3,7 +3,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <app-progresso></app-progresso>
+                <app-progresso [progresso]="progresso"></app-progresso>
             </div>
 
             <div class="col-sm-6">
@@ -19,7 +19,7 @@
               <p class="text-left">{{ rodadaFrase.fraseEng }}</p>
 
               <div class="form-group">
-                  <textarea class="form-control" rows="3" (input)="atualizaResposta($event)"></textarea>
+                  <textarea class="form-control" rows="3" (input)="atualizaResposta($event)" [value]="resposta"></textarea>
               </div>
             </div>
         </div>

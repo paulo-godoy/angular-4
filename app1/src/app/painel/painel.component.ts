@@ -10,18 +10,21 @@ import { FRASES} from './frases-mock';
 })
 export class PainelComponent implements OnInit {
 
-  public frases: Array<Frase> = FRASES;
+  public frases: Array<Frase> = FRASES
 
-  public instrucao: string = 'Traduza a frase:';
+  public instrucao: string = 'Traduza a frase:'
 
-  public resposta: string;
+  public resposta: string = ''
 
-  public rodada: number = 0;
-  public rodadaFrase: Frase;
+  public rodada: number = 0
+  public rodadaFrase: Frase
 
-  constructor() { 
-    this.rodadaFrase = this.frases[this.rodada]; 
-  
+  public progresso: number = 0
+
+  constructor() {
+    this.atualizaRodada()
+
+
   }
 
   ngOnInit() {
@@ -33,7 +36,42 @@ export class PainelComponent implements OnInit {
   }
 
   public verificaResposta(): void {
-    console.log('Verificar resposta:', this.resposta)
+
+    if( this.rodadaFrase.frasePtbr == this.resposta) {
+      Swal.fire({
+        position: 'top-end',
+        type: 'success',
+        title: 'A tradução está correta.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      //troca pergunta
+    this.rodada++
+
+    //incrementa a barra de progresso
+    this.progresso = this.progresso + (100 / this.frases.length)
+
+    //Atualiza frase para usuario.
+    this.atualizaRodada()
+
+    } else {
+      Swal.fire({
+        position: 'top-end',
+        type: 'warning',
+        title: 'A tradução está incorreta.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+
+  }
+
+  public atualizaRodada(): void {
+    //define frase da rodada
+    this.rodadaFrase = this.frases[this.rodada]
+     //limpar resposta
+     this.resposta = ''
   }
 
 }
