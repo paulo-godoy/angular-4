@@ -51,7 +51,7 @@ export class PainelComponent implements OnInit {
 
     //incrementa a barra de progresso
     this.progresso = this.progresso + (100 / this.frases.length)
-    
+
     //Atualiza frase para usuario.
     this.atualizaRodada()
 
