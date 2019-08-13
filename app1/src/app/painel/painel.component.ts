@@ -10,7 +10,7 @@ import { FRASES} from './frases-mock';
 })
 export class PainelComponent implements OnInit {
 
-  public frases: Array<Frase> = FRASES
+  public frases: Frase[] = FRASES
 
   public instrucao: string = 'Traduza a frase:'
 
@@ -51,7 +51,7 @@ export class PainelComponent implements OnInit {
 
     //incrementa a barra de progresso
     this.progresso = this.progresso + (100 / this.frases.length)
-
+    
     //Atualiza frase para usuario.
     this.atualizaRodada()
 
