@@ -1,7 +1,8 @@
 import { Frase } from './../shared/frase.model';
 import { Component, OnInit, ɵConsole } from '@angular/core';
 import { FRASES} from './frases-mock';
-
+import Swal from 'sweetalert2';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-painel',
@@ -20,6 +21,8 @@ export class PainelComponent implements OnInit {
   public rodadaFrase: Frase
 
   public progresso: number = 0
+
+  public tentativas: number = 3
 
   constructor() {
     this.atualizaRodada()
@@ -52,6 +55,17 @@ export class PainelComponent implements OnInit {
     //incrementa a barra de progresso
     this.progresso = this.progresso + (100 / this.frases.length)
 
+    //verifica se as tentativas foram esgotadas
+    if(this.rodada === 4 ) {
+      Swal.fire({
+        position: 'top-end',
+        type: 'success',
+        title: 'Você concluiu as traduções com sucesso.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+
     //Atualiza frase para usuario.
     this.atualizaRodada()
 
@@ -63,6 +77,18 @@ export class PainelComponent implements OnInit {
         showConfirmButton: false,
         timer: 1500
       })
+
+      this.tentativas--
+
+      if (this.tentativas === -1) {
+        Swal.fire({
+          position: 'top-end',
+          type: 'error',
+          title: 'Você perdeu todas as suas tentativas!.',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
     }
 
   }
