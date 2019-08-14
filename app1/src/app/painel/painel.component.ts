@@ -1,15 +1,15 @@
 import { Frase } from './../shared/frase.model';
-import { Component, OnInit, ɵConsole } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { FRASES} from './frases-mock';
 import Swal from 'sweetalert2';
-import { runInThisContext } from 'vm';
+
 
 @Component({
   selector: 'app-painel',
   templateUrl: './painel.component.html',
   styleUrls: ['./painel.component.css']
 })
-export class PainelComponent implements OnInit {
+export class PainelComponent implements OnInit, OnDestroy {
 
   public frases: Frase[] = FRASES
 
@@ -24,6 +24,8 @@ export class PainelComponent implements OnInit {
 
   public tentativas: number = 3
 
+  @Output() public encerrarJogo: EventEmitter<string> = new EventEmitter()
+
   constructor() {
     this.atualizaRodada()
 
@@ -31,6 +33,10 @@ export class PainelComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    console.log('destroido');
   }
 
   public atualizaResposta(resposta: Event): void {
@@ -57,13 +63,14 @@ export class PainelComponent implements OnInit {
 
     //verifica se as tentativas foram esgotadas
     if(this.rodada === 4 ) {
-      Swal.fire({
-        position: 'top-end',
-        type: 'success',
-        title: 'Você concluiu as traduções com sucesso.',
-        showConfirmButton: false,
-        timer: 1500
-      })
+      this.encerrarJogo.emit('vitoria')
+      // Swal.fire({
+      //   position: 'top-end',
+      //   type: 'success',
+      //   title: 'Você concluiu as traduções com sucesso.',
+      //   showConfirmButton: false,
+      //   timer: 1500
+      // })
     }
 
     //Atualiza frase para usuario.
@@ -81,13 +88,14 @@ export class PainelComponent implements OnInit {
       this.tentativas--
 
       if (this.tentativas === -1) {
-        Swal.fire({
-          position: 'top-end',
-          type: 'error',
-          title: 'Você perdeu todas as suas tentativas!.',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        this.encerrarJogo.emit('derrota')
+        // Swal.fire({
+        //   position: 'top-end',
+        //   type: 'error',
+        //   title: 'Você perdeu todas as suas tentativas!.',
+        //   showConfirmButton: false,
+        //   timer: 1500
+        // })
       }
     }
 
